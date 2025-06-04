@@ -33,6 +33,19 @@ PAGE = """
             el.selectionStart = el.selectionEnd = start + text.length;
             updatePreview();
         }
+        function fixLatex(str) {
+            var tokens = ['int', 'sum', 'sqrt', 'frac', 'lim'];
+            tokens.forEach(function(t) {
+                var re = new RegExp('(^|[^\\\\])' + t, 'g');
+                str = str.replace(re, '$1\\\' + t);
+            });
+            return str;
+        }
+        function prepareForm() {
+            var el = document.getElementById('expr');
+            el.value = fixLatex(el.value);
+            updatePreview();
+        }
         function updatePreview() {
             var el = document.getElementById('expr');
             var preview = document.getElementById('preview');
@@ -47,7 +60,7 @@ PAGE = """
 <body>
     <div class="container">
         <header><h1>Calculus Solver</h1></header>
-        <form method="post">
+        <form method="post" onsubmit="prepareForm()">
             <div class="toolbar">
                 <button type="button" onclick="insert('\\frac{d}{dx} ')">d/dx</button>
                 <button type="button" onclick="insert('\\int ')">&#8747;</button>

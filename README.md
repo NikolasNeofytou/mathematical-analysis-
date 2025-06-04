@@ -38,7 +38,9 @@ python web_app.py
 
 Open `http://localhost:5000` in a browser and enter a LaTeX expression using the
 same format as on the command line (omit surrounding `$` markers).  The page
-shows a live preview of your input using MathJax.
+shows a live preview of your input using MathJax.  When you press **Solve** the
+form automatically adds missing backslashes to common commands such as `int` or
+`sum` so your expression is valid LaTeX.
 
 If parsing fails, a helpful error message is displayed.  Typical mistakes
 include missing braces or leaving out the integration variable.

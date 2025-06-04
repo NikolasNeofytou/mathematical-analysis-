@@ -36,18 +36,19 @@ def solve_expression(expr: sp.Expr) -> str:
         latex_antideriv = sp.latex(antiderivative)
         latex_result = sp.latex(result)
         steps = [
-            f"Given integral $${latex_expr}$$",
-            f"Find antiderivative: $$ {latex_antideriv} $$",
+            f"We start with the integral $$ {latex_expr} $$.",
+            f"The antiderivative of the integrand with respect to $$ {sp.latex(var)} $$ is $$ {latex_antideriv} $$.",
         ]
         if len(expr.limits[0]) == 3:
             lower, upper = expr.limits[0][1], expr.limits[0][2]
             steps.append(
-                f"Evaluate from $$ {sp.latex(lower)} $$ to $$ {sp.latex(upper)} $$"
-            )
-            steps.append(f"Result: $$ {latex_result} $$")
+                f"Next evaluate the antiderivative at $$ {sp.latex(upper)} $$ and $$ {sp.latex(lower)} $$.")
+            steps.append(
+                f"This gives $$ {latex_antideriv}\\Big|_{{{sp.latex(lower)}}}^{{{sp.latex(upper)}}} $$.")
+            steps.append(f"Hence the result is $$ {latex_result} $$.")
         else:
-            steps.append("Add constant of integration")
-            steps.append(f"Result: $$ {latex_result} $$ + C")
+            steps.append("Because there are no limits, add a constant of integration $$C$$.")
+            steps.append(f"The indefinite integral is $$ {latex_result} + C $$.")
         return "\n".join(steps)
     elif isinstance(expr, sp.Derivative):
         var = expr.variables[0]
@@ -55,9 +56,8 @@ def solve_expression(expr: sp.Expr) -> str:
         latex_expr = sp.latex(expr)
         latex_result = sp.latex(result)
         steps = [
-            f"Given derivative $${latex_expr}$$",
-            f"Differentiate with respect to $${sp.latex(var)}$$",
-            f"Result: $$ {latex_result} $$",
+            f"We start with the derivative $$ {latex_expr} $$.",
+            f"Differentiating the expression with respect to $$ {sp.latex(var)} $$ gives $$ {latex_result} $$.",
         ]
         return "\n".join(steps)
     elif isinstance(expr, sp.Sum):
@@ -65,9 +65,9 @@ def solve_expression(expr: sp.Expr) -> str:
         latex_expr = sp.latex(expr)
         latex_result = sp.latex(result)
         steps = [
-            f"Given sum $${latex_expr}$$",
-            "Compute each term and add",
-            f"Result: $$ {latex_result} $$",
+            f"We start with the sum $$ {latex_expr} $$.",
+            "Evaluate the expression for each value of the index and add the terms together.",
+            f"The final sum is $$ {latex_result} $$.",
         ]
         return "\n".join(steps)
     else:
