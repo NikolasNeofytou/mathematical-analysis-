@@ -43,4 +43,7 @@ shows a live preview of your input using MathJax.
 If parsing fails, a helpful error message is displayed.  Typical mistakes
 include missing braces or leaving out the integration variable.
 
-Install dependencies using `pip install -r requirements.txt` if needed.
+The interface uses a dark theme and provides a small toolbar with common
+calculus symbols so you can insert `\int`, `\frac{d}{dx}`, and similar tokens
+without knowing LaTeX. Each step of the solution appears in a boxed area for
+clarity. Install dependencies using `pip install -r requirements.txt` if needed.

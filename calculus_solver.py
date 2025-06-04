@@ -29,22 +29,46 @@ def parse_expression(expr_str: str) -> sp.Expr:
 
 def solve_expression(expr: sp.Expr) -> str:
     if isinstance(expr, sp.Integral):
+        var = expr.limits[0][0]
+        antiderivative = sp.integrate(expr.function, var)
         result = sp.integrate(expr.function, *expr.limits)
         latex_expr = sp.latex(expr)
+        latex_antideriv = sp.latex(antiderivative)
         latex_result = sp.latex(result)
-        steps = [f"Given integral $${latex_expr}$$", f"Evaluating the integral:", f"$$ {latex_result} $$ + C"]
+        steps = [
+            f"Given integral $${latex_expr}$$",
+            f"Find antiderivative: $$ {latex_antideriv} $$",
+        ]
+        if len(expr.limits[0]) == 3:
+            lower, upper = expr.limits[0][1], expr.limits[0][2]
+            steps.append(
+                f"Evaluate from $$ {sp.latex(lower)} $$ to $$ {sp.latex(upper)} $$"
+            )
+            steps.append(f"Result: $$ {latex_result} $$")
+        else:
+            steps.append("Add constant of integration")
+            steps.append(f"Result: $$ {latex_result} $$ + C")
         return "\n".join(steps)
     elif isinstance(expr, sp.Derivative):
+        var = expr.variables[0]
         result = expr.doit()
         latex_expr = sp.latex(expr)
         latex_result = sp.latex(result)
-        steps = [f"Given derivative $${latex_expr}$$", f"Computing the derivative:", f"$$ {latex_result} $$"]
+        steps = [
+            f"Given derivative $${latex_expr}$$",
+            f"Differentiate with respect to $${sp.latex(var)}$$",
+            f"Result: $$ {latex_result} $$",
+        ]
         return "\n".join(steps)
     elif isinstance(expr, sp.Sum):
         result = expr.doit()
         latex_expr = sp.latex(expr)
         latex_result = sp.latex(result)
-        steps = [f"Given sum $${latex_expr}$$", f"Evaluating the sum:", f"$$ {latex_result} $$"]
+        steps = [
+            f"Given sum $${latex_expr}$$",
+            "Compute each term and add",
+            f"Result: $$ {latex_result} $$",
+        ]
         return "\n".join(steps)
     else:
         raise ValueError("Unsupported expression type")
