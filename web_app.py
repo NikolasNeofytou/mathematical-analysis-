@@ -14,7 +14,8 @@ PAGE = """
 <body>
     <h1>Calculus Solver</h1>
     <form method="post">
-        <input id="expr" type="text" name="expr" size="50" value="{{expr|e}}" placeholder="Enter LaTeX expression" oninput="updatePreview()"/>
+        <p>Enter a calculus expression in LaTeX (without dollar signs).</p>
+        <input id="expr" type="text" name="expr" size="50" value="{{expr|e}}" placeholder="\\int_0^1 x dx" oninput="updatePreview()"/>
         <button type="submit">Solve</button>
     </form>
     <div id="preview"></div>
@@ -30,10 +31,14 @@ PAGE = """
         document.addEventListener('DOMContentLoaded', updatePreview);
     </script>
     {% if solution %}
-        <div id="solution">
-        {% for line in solution.split('\n') %}
-            <p>{{ line | safe }}</p>
-        {% endfor %}
+        <div id="solution" style="margin-top:1em;">
+        {% if solution.startswith('Error:') %}
+            <p style="color:red;">{{ solution }}</p>
+        {% else %}
+            {% for line in solution.split('\n') %}
+                <p>{{ line | safe }}</p>
+            {% endfor %}
+        {% endif %}
         </div>
     {% endif %}
 </body>

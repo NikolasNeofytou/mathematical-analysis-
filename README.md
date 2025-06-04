@@ -25,6 +25,9 @@ standard calculus constructs such as:
 
 For example `\frac{d}{dx} x^2`, `\int x^2 dx` or `\sum_{n=1}^3 n`.
 
+If the program cannot parse your input, it will report an error explaining what
+went wrong so you can adjust the expression.
+
 ## Web application
 
 A minimal Flask app provides a web interface for entering equations. Start the server with:
@@ -33,9 +36,11 @@ A minimal Flask app provides a web interface for entering equations. Start the s
 python web_app.py
 ```
 
-Open `http://localhost:5000` in a browser to enter a LaTeX expression and view the step-by-step solution rendered with MathJax.
+Open `http://localhost:5000` in a browser and enter a LaTeX expression using the
+same format as on the command line (omit surrounding `$` markers).  The page
+shows a live preview of your input using MathJax.
 
-The page shows a live preview of the expression so you can verify that your
-input is parsed correctly.
+If parsing fails, a helpful error message is displayed.  Typical mistakes
+include missing braces or leaving out the integration variable.
 
 Install dependencies using `pip install -r requirements.txt` if needed.
